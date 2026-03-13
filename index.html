@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Robby England</title>
+  <title>robbyengland.com</title>
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -18,24 +18,109 @@
     }
 
     body {
-      background-color: #2c3e50;
+      background-color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    h1 {
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-weight: 300;
-      font-size: clamp(1.5rem, 6vw, 5rem);
-      color: #e8e0d5;
-      letter-spacing: 0.08em;
+    .balloon-wrap {
+      position: relative;
+      display: inline-block;
       text-align: center;
       padding: 0 1rem;
+    }
+
+    /* Base layer: deep metallic red */
+    .balloon-base {
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-weight: bold;
+      font-size: clamp(1.4rem, 6vw, 5.5rem);
+      letter-spacing: 0.02em;
+      background: linear-gradient(
+        180deg,
+        #ff6666 0%,
+        #ee0000 25%,
+        #cc0000 50%,
+        #aa0000 70%,
+        #880000 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter:
+        drop-shadow(2px 4px 0px #6b0000)
+        drop-shadow(0px 6px 8px rgba(0, 0, 0, 0.35))
+        drop-shadow(0px 1px 0px rgba(255,255,255,0.4));
+      position: relative;
+    }
+
+    /* Static glint/shine overlay layer */
+    .balloon-glint {
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-weight: bold;
+      font-size: clamp(1.4rem, 6vw, 5.5rem);
+      letter-spacing: 0.02em;
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      right: 1rem;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 200, 200, 0.6) 18%,
+        rgba(255, 255, 255, 0) 35%,
+        rgba(255, 255, 255, 0) 65%,
+        rgba(255, 180, 180, 0.25) 85%,
+        rgba(255, 255, 255, 0.5) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      pointer-events: none;
+    }
+
+    /* Animated sun sweep glimmer */
+    .balloon-sweep {
+      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-weight: bold;
+      font-size: clamp(1.4rem, 6vw, 5.5rem);
+      letter-spacing: 0.02em;
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      right: 1rem;
+      background: linear-gradient(
+        105deg,
+        rgba(255,255,255,0) 30%,
+        rgba(255,255,255,0.85) 46%,
+        rgba(255,245,245,1) 50%,
+        rgba(255,255,255,0.85) 54%,
+        rgba(255,255,255,0) 70%
+      );
+      background-size: 300% 100%;
+      background-position: -100% 0;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      pointer-events: none;
+      animation: sunSweep 3.5s ease-in-out infinite;
+    }
+
+    @keyframes sunSweep {
+      0%   { background-position: -100% 0; opacity: 0; }
+      8%   { opacity: 1; }
+      62%  { background-position: 200% 0; opacity: 1; }
+      75%  { opacity: 0; }
+      100% { background-position: 200% 0; opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <h1>Robby England</h1>
+  <div class="balloon-wrap">
+    <div class="balloon-base">robbyengland.com</div>
+    <div class="balloon-glint">robbyengland.com</div>
+    <div class="balloon-sweep">robbyengland.com</div>
+  </div>
 </body>
 </html>
