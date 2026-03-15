@@ -14,6 +14,9 @@
     gtag('config', 'G-8N1ET1NL49');
   </script>
 
+  <!-- Fredoka as the solid filled-in fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -39,13 +42,14 @@
       display: inline-block;
       text-align: center;
       padding: 0 1rem;
+      cursor: pointer;
     }
 
     /* Base layer: deep metallic red */
     .balloon-base {
-      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Fredoka", cursive;
       font-weight: bold;
-      font-size: clamp(1.4rem, 6vw, 5.5rem);
+      font-size: clamp(2rem, 6vw, 5.5rem);
       letter-spacing: 0.02em;
       background: linear-gradient(
         180deg,
@@ -67,9 +71,9 @@
 
     /* Static glint/shine overlay layer */
     .balloon-glint {
-      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Fredoka", cursive;
       font-weight: bold;
-      font-size: clamp(1.4rem, 6vw, 5.5rem);
+      font-size: clamp(2rem, 6vw, 5.5rem);
       letter-spacing: 0.02em;
       position: absolute;
       top: 0;
@@ -92,9 +96,9 @@
 
     /* Animated sun sweep glimmer */
     .balloon-sweep {
-      font-family: "Comic Sans MS", "Comic Sans", cursive;
+      font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Chalkboard", "Fredoka", cursive;
       font-weight: bold;
-      font-size: clamp(1.4rem, 6vw, 5.5rem);
+      font-size: clamp(2rem, 6vw, 5.5rem);
       letter-spacing: 0.02em;
       position: absolute;
       top: 0;
@@ -127,10 +131,72 @@
   </style>
 </head>
 <body>
-  <div class="balloon-wrap">
+  <div class="balloon-wrap" id="text-wrap">
     <div class="balloon-base">robbyengland.com</div>
     <div class="balloon-glint">robbyengland.com</div>
     <div class="balloon-sweep">robbyengland.com</div>
   </div>
+
+  <script>
+    // --- Click on text ---
+    document.getElementById('text-wrap').addEventListener('click', function(e) {
+      e.stopPropagation();
+      gtag('event', 'click_text', {
+        event_category: 'engagement',
+        event_label: 'clicked url text'
+      });
+    });
+
+    // --- Click on whitespace (top vs bottom) ---
+    document.body.addEventListener('click', function(e) {
+      var midpoint = window.innerHeight / 2;
+      if (e.clientY < midpoint) {
+        gtag('event', 'click_top', {
+          event_category: 'engagement',
+          event_label: 'clicked top whitespace'
+        });
+      } else {
+        gtag('event', 'click_bottom', {
+          event_category: 'engagement',
+          event_label: 'clicked bottom whitespace'
+        });
+      }
+    });
+
+    // --- Scroll attempt (desktop mouse wheel) ---
+    var scrollFired = false;
+    window.addEventListener('wheel', function() {
+      if (!scrollFired) {
+        scrollFired = true;
+        gtag('event', 'scroll_attempt', {
+          event_category: 'engagement',
+          event_label: 'attempted scroll desktop'
+        });
+        // Reset after 2s so repeated attempts can be tracked
+        setTimeout(function() { scrollFired = false; }, 2000);
+      }
+    }, { passive: true });
+
+    // --- Scroll attempt (mobile touch) ---
+    var touchStartY = null;
+    var touchScrollFired = false;
+    window.addEventListener('touchstart', function(e) {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', function(e) {
+      if (!touchScrollFired && touchStartY !== null) {
+        var deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+        if (deltaY > 10) {
+          touchScrollFired = true;
+          gtag('event', 'scroll_attempt', {
+            event_category: 'engagement',
+            event_label: 'attempted scroll mobile'
+          });
+          setTimeout(function() { touchScrollFired = false; }, 2000);
+        }
+      }
+    }, { passive: true });
+  </script>
 </body>
 </html>
